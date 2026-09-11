@@ -90,6 +90,9 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
+// Side by side with the hardcoded anti-pattern. Scaffold lives in
+// NaiveView.swift so both files show the same canvas. Set the canvas
+// device picker to iPhone SE (3rd generation).
+#Preview("Naive vs Correct — iPhone SE", traits: .fixedLayout(width: 830, height: 760)) {
+    BiometryComparison()
 }

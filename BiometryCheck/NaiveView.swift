@@ -7,6 +7,7 @@
 //  it asks LAContext what the hardware actually is. Use that one.
 
 import SwiftUI
+import UIKit
 
 struct NaiveView: View {
     /// Faked so the wrong error state can be shown on camera. The real version
@@ -49,6 +50,58 @@ struct NaiveView: View {
     }
 }
 
-#Preview {
-    NaiveView()
+// MARK: - Preview comparison
+
+/// Renders the anti-pattern and the correct version next to each other at
+/// iPhone SE (3rd generation) screen size, for screen recording.
+///
+/// Both NaiveView.swift and ContentView.swift preview this same view, so
+/// whichever file is open, the canvas shows the identical comparison.
+///
+/// Set the canvas device picker to **iPhone SE (3rd generation)**. The frames
+/// below fix the geometry, but `ContentView` asks LAContext what the hardware
+/// is, and that answer comes from the canvas device — on a Face ID device both
+/// panels agree and the comparison proves nothing. There is no API to pin the
+/// preview device in code: `previewDevice(_:)` is deprecated as of 27.0 and
+/// tells you to use the canvas picker, and no device PreviewTrait exists.
+struct BiometryComparison: View {
+    /// iPhone SE (3rd generation) logical screen size, in points (750 × 1334 @2x).
+    static let seScreen = CGSize(width: 375, height: 667)
+
+    var body: some View {
+        HStack(spacing: 24) {
+            panel("Naive — hardcoded", tint: .red) {
+                NaiveView()
+            }
+            panel("Correct — biometryType", tint: .green) {
+                ContentView()
+            }
+        }
+        .padding(24)
+    }
+
+    private func panel<Content: View>(
+        _ caption: String,
+        tint: Color,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(spacing: 12) {
+            Text(caption)
+                .font(.headline)
+                .foregroundStyle(tint)
+
+            content()
+                .frame(width: Self.seScreen.width, height: Self.seScreen.height)
+                .background(Color(UIColor.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 28))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 28)
+                        .stroke(tint.opacity(0.7), lineWidth: 3)
+                }
+        }
+    }
+}
+
+#Preview("Naive vs Correct — iPhone SE", traits: .fixedLayout(width: 830, height: 760)) {
+    BiometryComparison()
 }
