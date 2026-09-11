@@ -60,7 +60,7 @@
 				000000000000000000000010 /* BiometryCheck */,
 			);
 			name = BiometryCheck;
-			productName = MyApp;
+			productName = BiometryCheck;
 			productReference = 000000000000000000000120 /* BiometryCheck.app */;
 			productType = "com.apple.product-type.application";
 		};
