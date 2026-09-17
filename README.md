@@ -118,3 +118,7 @@ language mode
 So `@unknown default` is not optional hygiene. Leave it out and the code breaks
 in the Swift 6 language mode. `.opticID` is marked `ios(17.0)` in the SDK, so it
 needs no availability guard at any modern deployment target.
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
