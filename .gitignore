@@ -17,3 +17,6 @@ xcuserdata/
 
 # Xcode 27 agent and intelligence state
 *.xcodesamplecode.plist
+
+# Claude Code local settings
+.claude/settings.local.json
